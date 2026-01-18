@@ -22,7 +22,7 @@ To map CelebA’s binary attributes to natural language prompts, I developed a *
 This approach distributes all attributes across 8 semantic buckets (e.g., Hair Structure, Nose, Eyebrows, ..., Other). 
 This enforces **mutual exclusion**, preventing logical contradictions such as "Black hair" and "Blond hair" appearing in the same prompt.
 
-For full implementation details, see: [`src/prompt_generator/Analysis_v9.md`](src/prompt_generator/Dataset_Analysis.md).
+For full implementation details, see: [`src/prompt_generator/Dataset_Analysis.md`](src/prompt_generator/Dataset_Analysis.md).
 
 **Dashboard & Validation**
 
