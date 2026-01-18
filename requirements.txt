@@ -1,0 +1,11 @@
+#torch --index-url https://download.pytorch.org/whl/cu124
+diffusers
+transformers
+accelerate
+streamlit
+protobuf
+sentencepiece
+python-dotenv
+pandas
+matplotlib
+seaborn
