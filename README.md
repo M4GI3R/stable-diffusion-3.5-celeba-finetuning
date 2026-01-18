@@ -39,7 +39,7 @@ hair, full lips, and bags under the eyes"* corresponds to accurate ground-truth 
 ![Model Comparison](readme_images/comparison_SD35_celebA_examples/Sample_4_SD35_before_tuning.png)
 ![Matching Images Example](readme_images/comparison_SD35_celebA_examples/Sample_4_celebA.png)
 
-Find more examples [here](readme_images/comparison_SD35_celebA_examples).
+Find more examples [`readme_images/comparison_SD35_celebA_examples`](readme_images/comparison_SD35_celebA_examples).
 
 ---
 
