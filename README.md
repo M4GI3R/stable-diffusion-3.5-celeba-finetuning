@@ -33,11 +33,13 @@ hair, full lips, and bags under the eyes"* corresponds to accurate ground-truth 
 ## Examples (before fine-tuning)
 [vanilla Stable Diffusion 3.5]
 ### "A realistic portrait of a man, with brown hair, full lips, and bags under the eyes"
-![Model Comparison](readme_images/Sample_2_SD35_before_tuning.png)
-![Matching Images Example](readme_images/Sample_2_celebA.png)
+![Model Comparison](readme_images/comparison_SD35_celebA_examples/Sample_2_SD35_before_tuning.png)
+![Matching Images Example](readme_images/comparison_SD35_celebA_examples/Sample_2_celebA.png)
 ### "A photorealistic portrait of a woman, with black hair, slightly parted lips, and a smile."
-![Model Comparison](readme_images/Sample_4_SD35_before_tuning.png)
-![Matching Images Example](readme_images/Sample_4_celebA.png)
+![Model Comparison](readme_images/comparison_SD35_celebA_examples/Sample_4_SD35_before_tuning.png)
+![Matching Images Example](readme_images/comparison_SD35_celebA_examples/Sample_4_celebA.png)
+
+Find more examples [here](https://github.com/M4GI3R/stable-diffusion-3.5-celeba-finetuning/tree/master/comparison_SD35_celebA_examples).
 
 ---
 
