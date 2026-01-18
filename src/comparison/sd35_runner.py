@@ -1,5 +1,9 @@
 import os
 import sys
+from dotenv import load_dotenv
+load_dotenv()
+
+OFFLINE_MODE = os.getenv("OFFLINE", "False").lower() in ("true", "1", "yes")
 
 # --- CONFIGURE CACHE PATH (MUST BE FIRST) ---
 # Get the absolute path to the current file (src/comparison/sd35_runner.py)
@@ -10,7 +14,16 @@ cache_dir = os.path.join(project_root, ".cache")
 
 # Set the environment variable BEFORE importing diffusers/huggingface
 os.environ["HF_HOME"] = cache_dir
-print(f"Hugging Face Cache set to: {cache_dir}")
+
+if OFFLINE_MODE:
+    os.environ["HF_HUB_OFFLINE"] = "1"
+    print(f"Hugging Face Cache: {cache_dir}")
+    print("🌍 Mode: OFFLINE (Network disabled, using local cache only)")
+else:
+    # Ensure offline mode is NOT forced if we want to be online
+    os.environ.pop("HF_HUB_OFFLINE", None)
+    print(f"Hugging Face Cache: {cache_dir}")
+    print("🌍 Mode: ONLINE (Will check Hugging Face for updates)")
 
 import torch
 import time
@@ -25,10 +38,15 @@ class SDRunner:
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.current_model_id = None
         self.pipeline = None
-        
-        if self.auth_token:
-            from huggingface_hub import login
-            login(token=self.auth_token)
+
+        if not OFFLINE_MODE and self.auth_token:
+            try:
+                from huggingface_hub import login
+                login(token=self.auth_token)
+                print("✅ Logged in to Hugging Face")
+            except Exception as e:
+                print(f"⚠️ Login failed: {e}")
+                print("Continuing, but model downloads might fail if repositories are gated.")
 
     def load_model(self, model_id):
         if self.current_model_id == model_id:
@@ -50,7 +68,8 @@ class SDRunner:
             
             self.pipeline = StableDiffusion3Pipeline.from_pretrained(
                 model_id, 
-                torch_dtype=torch.float16 if self.device == "cuda" else torch.float32
+                torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
+                local_files_only = OFFLINE_MODE
             )
             t1 = time.time()
             print(f"Model loaded from disk in {t1-t0:.2f}s")
@@ -64,6 +83,12 @@ class SDRunner:
                 self.pipeline.to(self.device)
                 
             self.current_model_id = model_id
+        except OSError:
+            if OFFLINE_MODE:
+                print(f"\n❌ ERROR: Model '{model_id}' not found in cache.", file=sys.stderr)
+                print(f"   Path checked: {cache_dir}", file=sys.stderr)
+                print("   Set OFFLINE=False in .env to download it.\n", file=sys.stderr)
+            raise
         except Exception as e:
             print(f"Error loading model {model_id}: {e}")
             raise e
