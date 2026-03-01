@@ -157,7 +157,7 @@ Note: This is the only **non-exclusive** bucket, meaning in a prompt multiple at
 # OUTPUT TEMPLATE
 
 ```
-A realistic portrait of a {gender}, with {attr_1}, {attr_2}, and {attr_3}.
+A photo-realistic portrait of a {gender}, with {attr_1}, {attr_2}, and {attr_3}.
 ```
 
 ---

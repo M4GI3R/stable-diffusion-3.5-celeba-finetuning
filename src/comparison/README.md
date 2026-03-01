@@ -42,5 +42,5 @@ HF_TOKEN=hf_...
 
 ```powershell
 .\.venv\Scripts\python -m streamlit run src/comparison/dashboard.py
-.\.venv\Scripts\python -m streamlit run src/analysis/prompt_dashboard.py
+.\.venv\Scripts\python -m streamlit run src/prompt_generator/prompt_dashboard.py
 ```

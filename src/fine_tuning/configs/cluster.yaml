@@ -1,0 +1,54 @@
+# =============================================================================
+# Cluster Profile — A100 80GB (multi-GPU)
+# =============================================================================
+# Usage:
+#   Preprocess: python preprocess.py --config configs/cluster.yaml
+#   Train:      accelerate launch --config_file configs/accelerate_cluster.yaml train.py --config configs/cluster.yaml
+
+# --- Model ---
+model_id: "stabilityai/stable-diffusion-3.5-large"
+resolution: 1024
+
+# --- Data Paths ---
+csv_path: "src/prepare_celebA_hq/prompts.csv"
+img_dir: "res/img_celeba_hq/CelebAMask-HQ/CelebA-HQ-img"
+processed_dir: "data/processed"
+max_samples: null  # Use entire dataset (null = use all)
+output_dir: "output/ultimate_cluster"
+
+# --- LoRA ---
+rank: 128
+lora_alpha: 128
+target_modules:
+  - "to_k"
+  - "to_q"
+  - "to_v"
+  - "to_out.0"
+  - "add_k_proj"
+  - "add_v_proj"
+  - "add_q_proj"
+  - "to_add_out"
+  - "ff.net.0.proj"
+  - "ff.net.2.proj"
+
+# --- Training ---
+num_epochs: 5
+learning_rate: 3.0e-4
+batch_size: 16
+gradient_accumulation_steps: 1
+precision: "bf16"
+optimizer: "adamw"
+num_workers: 8
+
+# --- Checkpointing ---
+checkpoint_every: 500
+
+# --- Reproducibility ---
+seed: 42
+
+# --- Logging ---
+report_to: "wandb"
+tracker_project: "celeba_sd35_finetune"
+
+# --- Preprocessing ---
+overwrite_preprocess: false

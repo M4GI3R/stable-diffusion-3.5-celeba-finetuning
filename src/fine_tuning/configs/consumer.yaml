@@ -1,0 +1,48 @@
+# =============================================================================
+# Consumer Profile — RTX 4090 (24GB VRAM)
+# =============================================================================
+# Usage:
+#   Preprocess: python preprocess.py --config configs/consumer.yaml
+#   Train:      accelerate launch --config_file configs/accelerate_consumer.yaml train.py --config configs/consumer.yaml
+
+# --- Model ---
+model_id: "stabilityai/stable-diffusion-3.5-large"
+resolution: 1024
+
+# --- Data Paths ---
+csv_path: "src/prepare_celebA_hq/prompts.csv"
+img_dir: "res/img_celeba_hq/CelebAMask-HQ/CelebA-HQ-img"
+processed_dir: "data/processed"
+max_samples: 100  # Use subset of 30k dataset (null = use all)
+output_dir: "output/ultimate_consumer"
+
+# --- LoRA ---
+rank: 32
+lora_alpha: 32
+target_modules:
+  - "to_k"
+  - "to_q"
+  - "to_v"
+  - "to_out.0"
+
+# --- Training ---
+num_epochs: 10
+learning_rate: 1.0e-4
+batch_size: 1
+gradient_accumulation_steps: 4
+precision: "fp16"
+optimizer: "adamw_8bit"
+num_workers: 4
+
+# --- Checkpointing ---
+checkpoint_every: 500
+
+# --- Reproducibility ---
+seed: 42
+
+# --- Logging ---
+report_to: "none"  # Options: "wandb", "tensorboard", "none"
+tracker_project: "celeba_sd35_finetune"
+
+# --- Preprocessing ---
+overwrite_preprocess: false
